@@ -1,15 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import MyContainer from "../components/MyContainer";
 import { Link } from "react-router";
+import { auth } from "../firebase/firebase.config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const SingUp = () => {
+  const [show, setShow] = useState(false);
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    const email = e.target.email?.value;
+    const password = e.target.password?.value;
+
+    const regExp =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()\-_=+])[A-Za-z\d@$!%*?&#^()\-_=+]{8,}$/;
+
+    if (!regExp.test(password)) {
+      toast.error(
+        "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character"
+      );
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        // console.log(res);
+        toast.success("Signup Successfully !");
+      })
+      .catch((error) => {
+        // console.log(error);
+        toast.error(error.message);
+      });
+  };
+
   return (
     <div className="min-h-[96vh] flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 relative overflow-hidden">
       {/* Animated floating circles */}
-      {/* <div className="absolute inset-0">
+      <div className="absolute inset-0">
         <div className="absolute w-72 h-72 bg-pink-400/30 rounded-full blur-2xl top-10 left-10 animate-pulse"></div>
         <div className="absolute w-72 h-72 bg-purple-400/30 rounded-full blur-2xl bottom-10 right-10 animate-pulse"></div>
-      </div> */}
+      </div>
 
       <MyContainer>
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 p-6 lg:p-10 text-white">
@@ -28,7 +60,7 @@ const SingUp = () => {
               Sign Up
             </h2>
 
-            <form className="space-y-4">
+            <form onSubmit={handleSignup} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Email</label>
                 <input
@@ -44,16 +76,16 @@ const SingUp = () => {
                   Password
                 </label>
                 <input
-                //   type={show ? "text" : "password"}
+                  type={show ? "text" : "password"}
                   name="password"
                   placeholder="••••••••"
                   className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
                 />
                 <span
-                //   onClick={() => setShow(!show)}
+                  onClick={() => setShow(!show)}
                   className="absolute right-[8px] top-[36px] cursor-pointer z-50"
                 >
-                  {/* {show ? <FaEye /> : <IoEyeOff />} */}
+                  {show ? <IoEye /> : <IoEyeOff />}
                 </span>
               </div>
 
