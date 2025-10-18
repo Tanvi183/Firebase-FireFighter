@@ -4,6 +4,8 @@ import MainLayout from '../layout/MainLayout';
 import HomePage from '../pages/HomePage';
 import About from '../pages/About';
 import Profile from '../pages/Profile';
+import SingUp from '../pages/SingUp';
+import SingIn from '../pages/SingIn';
 
 export const router = createBrowserRouter([
     {
@@ -19,8 +21,16 @@ export const router = createBrowserRouter([
                 element : <About />
             },
             {
-                 path : '/profile',
+                path : '/profile',
                 element : <Profile />
+            },
+            {
+                path: "/signup",
+                element : <SingUp />
+            },
+            {
+                path: "/signin",
+                element : <SingIn />
             },
         ]
     },
