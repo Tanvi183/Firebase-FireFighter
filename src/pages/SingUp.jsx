@@ -30,8 +30,30 @@ const SingUp = () => {
         toast.success("Signup Successfully !");
       })
       .catch((error) => {
-        // console.log(error);
-        toast.error(error.message);
+        // console.log(error.code);
+        if (error.code === "auth/email-already-in-use") {
+          toast.error(
+            "User already exists in the database."
+          );
+        } else if (error.code === "auth/weak-password") {
+          toast.error("Bhai tomake at least 6 ta digit er pass dite hobe");
+        } else if (error.code === "auth/invalid-email") {
+          toast.error("Invalid email format. Please check your email.");
+        } else if (error.code === "auth/user-not-found") {
+          toast.error("User not found. Please sign up first.");
+        } else if (error.code === "auth/wrong-password") {
+          toast.error("Wrong password. Please try again.");
+        } else if (error.code === "auth/user-disabled") {
+          toast.error("This user account has been disabled.");
+        } else if (error.code === "auth/too-many-requests") {
+          toast.error("Too many attempts. Please try again later.");
+        } else if (error.code === "auth/operation-not-allowed") {
+          toast.error("Operation not allowed. Please contact support.");
+        } else if (error.code === "auth/network-request-failed") {
+          toast.error("Network error. Please check your connection.");
+        } else {
+          toast.error(error.message || "An unexpected error occurred.");
+        }
       });
   };
 
